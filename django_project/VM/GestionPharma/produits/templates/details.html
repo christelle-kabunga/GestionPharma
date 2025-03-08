@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails du Médicament</title>
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body class="container mt-5">
+    <h2>Détails du Médicament</h2>
+    <table class="table table-bordered">
+        <tr>
+            <th>Nom</th>
+            <td>{{ medicament.nom }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ medicament.description }}</td>
+        </tr>
+        <tr>
+            <th>Prix</th>
+            <td>{{ medicament.prix }} $</td>
+        </tr>
+        <tr>
+            <th>Quantité</th>
+            <td>{{ medicament.quantite }}</td>
+        </tr>
+        <tr>
+            <th>Date d'expiration</th>
+            <td>{{ medicament.date_expiration }}</td>
+        </tr>
+    </table>
+    <a href="{% url 'home' %}" class="btn btn-primary">Retour</a>
+</body>
+</html>

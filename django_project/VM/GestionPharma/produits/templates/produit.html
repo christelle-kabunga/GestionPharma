@@ -1,0 +1,81 @@
+<style>
+    .button{
+        padding: 5px 30px;
+        border-radius:5px;
+        font-weight:bold;
+        text-align:center;
+        color:white;
+        font-size:10px;
+    }
+
+    .red {
+        background-color: red;
+    }
+
+    .orange {
+        background-color: orange;
+    }
+
+    .green {
+        background-color: green;
+    }
+</style>  
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <div class="col-3">
+        <a href="{% url 'ajout' %}">
+               
+            <button class="btn btn-primary w-100" type="submit">Ajouter Produits</button>
+        </a>
+        </div>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Produits</h5>
+              <p></p>
+
+              <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Designation</th>
+                    <th scope="col">status</th>
+                    <th scope="col">Prix</th>
+                    <th scope="col">Quantité</th>
+                    <th scope="col">Exp Date</th>
+                    <th scope="col"  colspan="3" class="text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for n in object_list %}
+                    <tr>
+                        <td>{{n.nom}}</td>
+                        <td>{{n.description}}</td>
+                        <td class="status active"> <button class="button {{n.statut_quantite}} text-white">{{n.quantite}} </button></td>
+                        <td>{{n.prix}}</td>
+                        <td>{{n.quantite}}</td>
+                        <td>{{n.date_expiration}}</td>
+                        <td><a href="{% url 'modifier' n.id %}" class="btn btn-primary"> <i class="bi bi-pencil-square"></i> </a> </td>
+                        <td><a href="{% url 'supprimer' n.id %}" class="btn btn-danger"> <i class="bi bi-trash"></i> </a></td>
+                        <td><a href="{% url 'details' n.id %}" class="btn btn-info"> <i class="bi bi-eye"></i> </a></td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
