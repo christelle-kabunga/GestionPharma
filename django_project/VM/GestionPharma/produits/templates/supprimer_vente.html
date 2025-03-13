@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main id="main" class="main">
+  <div class="pagetitle">
+      <h1>Supprimer une Vente</h1>
+  </div>
+
+  <section class="section">
+      <div class="row">
+          <div class="col-lg-6 mx-auto">
+              <div class="card">
+                  <div class="card-body">
+                      <h5 class="card-title text-danger">Confirmer la Suppression</h5>
+
+                      <p>Êtes-vous sûr de vouloir supprimer cette vente ?</p>
+                      <ul>
+                          <li><strong>Médicament :</strong> {{ vente.medicament.nom }}</li>
+                          <li><strong>Quantité :</strong> {{ vente.quantite }}</li>
+                      </ul>
+
+                      <form method="POST">
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn-danger">Supprimer</button>
+                          <a href="{% url 'ventes' %}" class="btn btn-secondary">Annuler</a>
+                      </form>
+
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+</main>
+{% endblock %}

@@ -1,8 +1,93 @@
 {% extends "base.html" %}
 
-{% block produit %}
+{% block content %}
+<main id="main" class="main">
+<div class="pagetitle">
+    <h1>Tableau de Bord</h1>
+</div><!-- End Page Title -->
 
-{% include "produit.html" %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 mx-auto"> <!-- Limite la largeur et centre le contenu -->
+            <section class="section dashboard">
+                <div class="row g-4">
 
-{% endblock produit  %}
+                    <!-- Médicaments -->
+                    <div class="col-lg-6 col-md-12">
+                        <div class="card info-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Médicaments</h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-capsule"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6>{{ total_medicaments }}</h6>
+                                        <span class="text-success small pt-1 fw-bold">Total</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+                    <!-- Ventes -->
+                    <div class="col-lg-6 col-md-12">
+                        <div class="card info-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Ventes</h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-cart"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6>{{ total_ventes }}</h6>
+                                        <span class="text-success small pt-1 fw-bold">Total</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fournisseurs -->
+                    <div class="col-lg-6 col-md-12">
+                        <div class="card info-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Fournisseurs</h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-truck"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6>{{ total_fournisseurs }}</h6>
+                                        <span class="text-success small pt-1 fw-bold">Total</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Commandes -->
+                    <div class="col-lg-6 col-md-12">
+                        <div class="card info-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Commandes</h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-box-seam"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6>{{ total_commandes }}</h6>
+                                        <span class="text-success small pt-1 fw-bold">Total</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div> <!-- Fin row -->
+            </section>
+        </div> <!-- Fin col-lg-10 -->
+    </div> <!-- Fin row -->
+</div> <!-- Fin container-fluid -->
+</main><!-- End #main -->
+{% endblock %}

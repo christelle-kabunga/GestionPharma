@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Fournisseurs</h1>
+        <a href="{% url 'ajouter_fournisseur' %}" class="btn btn-primary">Ajouter Fournisseur</a>
+    </div>
+
+    <section class="section">
+         <!-- Affichage des messages -->
+         {% if messages %}
+         <div class="alert alert-dismissible fade show" role="alert">
+           {% for message in messages %}
+             <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">
+               {{ message }}
+             </div>
+           {% endfor %}
+         </div>
+       {% endif %}
+
+        <table class="table datatable">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Adresse</th>
+                    <th>Téléphone</th>
+                    <th>Email</th>
+                    <th scope="col"  colspan="2" class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fournisseur in fournisseurs %}
+                <tr>
+                    <td>{{ fournisseur.nom }}</td>
+                    <td>{{ fournisseur.adresse }}</td>
+                    <td>{{ fournisseur.telephone }}</td>
+                    <td>{{ fournisseur.email }}</td>
+                    <td>
+                        <a href="{% url 'modf' fournisseur.id %}" class="btn btn-primary"> <i class="bi bi-pencil-square"></i> </a> 
+                        <a href="{% url 'supf' fournisseur.id %}" class="btn btn-danger"> <i class="bi bi-trash"></i> </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">Aucun fournisseur trouvé.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</main>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Modifier un médicament</title>
+
+  <!-- Favicons -->
+  <link href="{% static 'img/favicon.png' %}" rel="icon">
+  <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/quill/quill.snow.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/quill/quill.bubble.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/simple-datatables/style.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'style.css' %}" rel="stylesheet">
+</head>
+
+<body>
+
+<main>
+  <div class="container">
+      <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+          <div class="container">
+              <div class="row justify-content-center">
+                  <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                      <div class="d-flex justify-content-center py-4">
+                          <a href="{% url 'home' %}" class="logo d-flex align-items-center w-auto">
+                              <img src="{% static 'img/logo.png' %}" alt="">
+                              <span class="d-none d-lg-block">Gestion pharmacie</span>
+                          </a>
+                      </div>
+                      <div class="card mb-3">
+                          <div class="card-body">
+                              <div class="pt-4 pb-2">
+                                  <h5 class="card-title text-center pb-0 fs-4">Modifier une commande</h5>
+                              </div>
+
+                              <!-- Affichage des messages -->
+                              {% if messages %}
+                                <div class="alert alert-dismissible fade show" role="alert">
+                                  {% for message in messages %}
+                                    <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">
+                                      {{ message }}
+                                    </div>
+                                  {% endfor %}
+                                </div>
+                              {% endif %}
+
+                              <!-- Formulaire de modification -->
+                              <form method="POST">
+                                {% csrf_token %}
+                                
+                                <label class="form-label" for="medicament">Médicament :</label>
+                                <select class="form-control" name="medicament">
+                                    {% for medicament in medicaments %}
+                                        <option value="{{ medicament.id }}" {% if medicament.id == commande.medicament.id %}selected{% endif %}>
+                                            {{ medicament.nom }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                        
+                                <label  class="form-label" for="quantite">Quantité :</label>
+                                <input class="form-control" type="number" name="quantite" value="{{ commande.quantite }}" required>
+                        
+                                <label class="form-label" for="fournisseur">Fournisseur :</label>
+                                <select class="form-control" name="fournisseur">
+                                    {% for fournisseur in fournisseurs %}
+                                        <option value="{{ fournisseur.id }}" {% if fournisseur.id == commande.fournisseur.id %}selected{% endif %}>
+                                            {{ fournisseur.nom }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                        
+                                <button type="submit" class="btn btn-primary mt-3">Modifier</button>
+                            </form>
+                            
+                          </div>
+                      </div>  
+                  </div>
+              </div>
+          </div>
+      </section>
+  </div>
+</main>
+
+<!-- Scripts -->
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/quill/quill.min.js' %}"></script>
+<script src="{% static 'vendor/simple-datatables/simple-datatables.js' %}"></script>
+<script src="{% static 'main.js' %}"></script>
+
+</body>
+</html>

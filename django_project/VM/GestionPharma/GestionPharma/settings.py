@@ -1,3 +1,16 @@
+import os
+
+# Définir BASE_DIR d'abord
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Ensuite, définir STATIC_PATH après BASE_DIR
+STATIC_PATH = os.path.join(BASE_DIR, "produit", "static")
+print(f" CHEMIN CALCULÉ : {STATIC_PATH}")
+print(f" EXISTE ? {os.path.exists(STATIC_PATH)}")  # Vérifie si Django voit bien le dossier
+
+STATICFILES_DIRS = [STATIC_PATH]
+
+
 """
 Django settings for GestionPharma project.
 

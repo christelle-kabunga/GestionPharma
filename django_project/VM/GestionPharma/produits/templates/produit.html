@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+
+{% block content %}
 <style>
     .button{
         padding: 5px 30px;
@@ -38,7 +41,16 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Produits</h5>
-              <p></p>
+              <!-- Affichage des messages -->
+              {% if messages %}
+              <div class="alert alert-dismissible fade show" role="alert">
+                {% for message in messages %}
+                  <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
 
               <!-- Table with stripped rows -->
               <table class="table datatable">
@@ -54,7 +66,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                    {% for n in object_list %}
+                  {% for n in medicaments %}
                     <tr>
                         <td>{{n.nom}}</td>
                         <td>{{n.description}}</td>
@@ -62,9 +74,11 @@
                         <td>{{n.prix}}</td>
                         <td>{{n.quantite}}</td>
                         <td>{{n.date_expiration}}</td>
-                        <td><a href="{% url 'modifier' n.id %}" class="btn btn-primary"> <i class="bi bi-pencil-square"></i> </a> </td>
-                        <td><a href="{% url 'supprimer' n.id %}" class="btn btn-danger"> <i class="bi bi-trash"></i> </a></td>
-                        <td><a href="{% url 'details' n.id %}" class="btn btn-info"> <i class="bi bi-eye"></i> </a></td>
+                        <td>
+                          <a href="{% url 'modifier' n.id %}" class="btn btn-primary"> <i class="bi bi-pencil-square"></i> </a> 
+                          <a href="{% url 'supprimer' n.id %}" class="btn btn-danger"> <i class="bi bi-trash"></i> </a>
+                          <a href="{% url 'details' n.id %}" class="btn btn-info"> <i class="bi bi-eye"></i> </a>
+                        </td>
                     </tr>
                   {% endfor %}
                 </tbody>
@@ -79,3 +93,4 @@
     </section>
 
   </main><!-- End #main -->
+  {% endblock %}
