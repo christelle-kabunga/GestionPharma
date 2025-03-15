@@ -2,14 +2,17 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth import logout,authenticate, login
 import uuid
 from .models import *
 from datetime import datetime
 
+
 #appel des fichiers templates
 
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    return render(request, 'home.html')
 
 def medicaments(request):
     liste_medicaments = Medicament.objects.all()  # Récupérer tous les médicaments
@@ -27,9 +30,32 @@ def fournisseurs(request):
     return render(request, 'fournisseur.html',{'fournisseurs': liste_fournisseurs})
 
 
+#pour vérifier si l'utilisateur est un superutilisateur
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        # Vérification des identifiants
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)  # Connecte l'utilisateur
+            return redirect('dashboard')  # Redirige vers la page d'accueil
+        else:
+            return render(request, 'login.html', {'error': 'Identifiants invalides'})
+    
+    return render(request, 'login.html')
+
+#deconnexion
+def logout_view(request):
+    logout(request)  # Déconnecte l'utilisateur
+    return redirect('login')  # Redirige vers la page de connexion après la déconnexion
+
 # Affichage des médicaments avec ListView
 class Affichage(ListView):
-    template_name = 'home.html'  # Template utilisé
+    template_name = 'produit.html'  # Template utilisé
     model = Medicament  # Modèle associé
     context_object_name = 'donnees'  # Nom de la variable dans le template
 
@@ -93,7 +119,7 @@ def ajout_donnees(request):
 
         # Si tout s'est bien passé, afficher le message de succès et rediriger
         messages.success(request, "Produit ajouté avec succès !")
-        return redirect('ajout')  
+        return redirect('produit')  
 
     else:
         return render(request, "add-product.html")
@@ -103,7 +129,7 @@ def modifier_donnees(request, medicament_id):
         medicament_uuid = uuid.UUID(str(medicament_id))  # 🔹 Convertir en UUID
     except ValueError:
         messages.error(request, "Identifiant invalide.")
-        return redirect('home')
+        return redirect('produit')
 
     medicament = get_object_or_404(Medicament, id=medicament_uuid)  # 🔹 Recherche avec UUID
 
@@ -148,7 +174,7 @@ def modifier_donnees(request, medicament_id):
             medicament.save()
 
             messages.success(request, "Produit modifié avec succès !")
-            return redirect('home')
+            return redirect('produit')
 
         except Exception as e:
             messages.error(request, f"Erreur lors de la modification du produit : {e}")
@@ -163,7 +189,7 @@ def supprimer_donnees(request, medicament_id):
     if request.method == "POST":
         medicament.delete()
         messages.success(request, "Médicament supprimé avec succès !")
-        return redirect('home')
+        return redirect('produit')
 
     return render(request, "delete-confirmation.html", {"medicament": medicament})
 
@@ -400,12 +426,36 @@ def supprimer_vente(request, vente_id):
     vente = get_object_or_404(Vente, id=vente_id)
     vente.medicament.quantite += vente.quantite  # Rétablissement du stock
     vente.medicament.save()
-    vente.delete()
-    messages.success(request, "Vente supprimée avec succès !")
-    return redirect('ventes')
+    if request.method == "POST":
+        vente.delete()
+        messages.success(request, "Vente supprimée avec succès !")
+        return redirect('ventes')
 
+    return render(request, "supprimer_vente.html", {"vente": vente})
+# Affiche la liste des ventes.
 @login_required
 def liste_ventes(request):
     """ Affiche la liste des ventes. """
     ventes = Vente.objects.all()
-    return render(request, 'ventes.html', {'ventes': ventes})
+    total = sum(vente.medicament.prix * vente.quantite for vente in ventes)  # Calcul du total
+    return render(request, 'ventes.html', {'ventes': ventes,'total': total})
+
+
+#fonction pour passer le total des ventes et d'autres totaux au template
+@login_required
+def dashboard(request):
+    """ Affiche le tableau de bord avec les totaux """
+    
+    # Vérifie si la base de données contient des données avant de faire les calculs
+    total_ventes = Vente.objects.aggregate(total=models.Sum(models.F('medicament__prix') * models.F('quantite')))['total'] or 0
+    total_medicaments = Medicament.objects.count()
+    total_fournisseurs = Fournisseur.objects.count()
+    total_commandes = CommandeFournisseur.objects.count()
+
+    context = {
+        'total_ventes': total_ventes,
+        'total_medicaments': total_medicaments,
+        'total_fournisseurs': total_fournisseurs,
+        'total_commandes': total_commandes
+    }
+    return render(request, 'home.html', context)

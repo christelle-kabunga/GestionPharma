@@ -10,6 +10,10 @@ print(f" EXISTE ? {os.path.exists(STATIC_PATH)}")  # Vérifie si Django voit bie
 
 STATICFILES_DIRS = [STATIC_PATH]
 
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/dashboard/'  # Redirige le superadmin après connexion
+LOGOUT_REDIRECT_URL = '/login/'  # Redirige vers login après déconnexion
+
 
 """
 Django settings for GestionPharma project.

@@ -45,7 +45,9 @@
                                   <th>Quantité</th>
                                   <th>Vendu par</th>
                                   <th>Date de Vente</th>
+                                  <th>Montant</th>
                                   <th scope="col"  colspan="2" class="text-center">Actions</th>
+                                  
                               </tr>
                           </thead>
                           <tbody>
@@ -55,6 +57,7 @@
                                   <td>{{ vente.quantite }}</td>
                                   <td>{{ vente.vendu_par.username }}</td>
                                   <td>{{ vente.date_vente }}</td>
+                                  <td>{{ vente.medicament.prix|floatformat:2|default:"0.00" }}</td>
                                   <td>
                                       <a href="{% url 'modifier_vente' vente.id %}" class="btn btn-primary">
                                         <i class="bi bi-pencil-square"></i>
@@ -67,7 +70,7 @@
                               {% endfor %}
                           </tbody>
                       </table>
-
+                      {% comment %} <h4>Total des ventes : <strong>{{ total_ventes }}</strong> FC</h4> {% endcomment %}
                   </div>
               </div>
           </div>

@@ -27,7 +27,7 @@ class Medicament(models.Model):
         db_table = 'medicament'  # Nom de la table dans la base de données
 
     def statut_quantite(self):
-        if self.quantite == 0:
+        if self.quantite == 1:
             return 'red'
         elif self.quantite <= 10:
             return 'orange'
